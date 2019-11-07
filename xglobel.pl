@@ -9,13 +9,13 @@ use Term::ANSIColor;
 $XHOME  = "~/.perl";
 $Xlogfilepath = "~/.log";
 
-$XUSER  = `whoami`;                     chomp();
-$XHOST  = `hostname -A`;                chomp();
-$XDATE  = `date +%Y_%m_%d_%H_%M-%a`;    chomp();
-$XPWD   = `pwd`;                        chomp();
-$XSYS   = `cat /etc/centos-release`;    chomp();
-$XGRP   = `id -g -n`;                   chomp();
-$XIPD   = `hostname -I`;                chomp();
+$XUSER  = `whoami`;                     chomp($XUSER);
+$XHOST  = `hostname -A`;                chomp($XHOST);
+$XDATE  = `date +%Y_%m_%d_%H_%M-%a`;    chomp($XDATE);
+$XPWD   = `pwd`;                        chomp($XPWD);
+$XSYS   = `cat /etc/centos-release`;    chomp($XSYS);
+$XGRP   = `id -g -n`;                   chomp($XGRP);
+$XIPD   = `hostname -I`;                chomp($XIPD);
 
 $Xengine="$XHOME/X_engine"
 
