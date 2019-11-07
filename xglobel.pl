@@ -9,13 +9,13 @@ use Term::ANSIColor;
 $XHOME  = "~/.perl";
 $Xlogfilepath = "~/.log";
 
-$XUSER  = `whoami`;                     chomp($XUSER);
-$XHOST  = `hostname -A`;                chomp($XHOST);
-$XDATE  = `date +%Y_%m_%d_%H_%M-%a`;    chomp($XDATE);
-$XPWD   = `pwd`;                        chomp($XPWD);
-$XSYS   = `cat /etc/centos-release`;    chomp($XSYS);
-$XGRP   = `id -g -n`;                   chomp($XGRP);
-$XIPD   = `hostname -I`;                chomp($XIPD);
+chomp($XUSER  = `whoami`);
+chomp($XHOST  = `hostname -A`);
+chomp($XDATE  = `date +%Y_%m_%d_%H_%M-%a`);
+chomp($XPWD   = `pwd`);
+chomp($XSYS   = `cat /etc/centos-release`);
+chomp($XGRP   = `id -g -n`);
+chomp($XIPD   = `hostname -I`);
 
 $Xengine="$XHOME/X_engine"
 
@@ -46,12 +46,12 @@ sub xavierstudio {
 sub splitline {
         print "\n";
         for($i=0;$i<=@_[0];$i++) {print "@_[1]";}
-        print "\n";
+        print "\n\n";
 }
 sub splitlineO {
         print OUTPUT "\n";
         for($i=0;$i<=@_[0];$i++) {print OUTPUT "@_[1]";}
-        print OUTPUT "\n";
+        print OUTPUT "\n\n";
 }
 
 #&get_log("cmd",@ARGV);
