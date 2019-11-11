@@ -6,16 +6,17 @@ use Term::ANSIColor;
 #use threads("exit"=>"threads_only"):
 #use threads::shared:
 
-$XHOME  = "~/.perl";
-$Xlogfilepath = "~/.log";
+$SIG{INT}       = sub {&printBR("\n### You has enter the Ctrl+C keys,now exit $$ ...\n");kill(9,-$$);exit 0;};
+$XHOME          = "~/.perl";
+$Xlogfilepath   = "~/.log";
 
-chomp($XUSER  = `whoami`);
-chomp($XHOST  = `hostname -A`);
-chomp($XDATE  = `date +%Y_%m_%d_%H_%M-%a`);
-chomp($XPWD   = `pwd`);
-chomp($XSYS   = `cat /etc/centos-release`);
-chomp($XGRP   = `id -g -n`);
-chomp($XIPD   = `hostname -I`);
+chomp($XUSER    = `whoami`);
+chomp($XHOST    = `hostname -A`);
+chomp($XDATE    = `date +%Y_%m_%d_%H_%M-%a`);
+chomp($XPWD     = `pwd`);
+chomp($XSYS     = `cat /etc/centos-release`);
+chomp($XGRP     = `id -g -n`);
+chomp($XIPD     = `hostname -I`);
 
 $Xengine="$XHOME/X_engine"
 
@@ -40,6 +41,35 @@ sub xavierstudio {
         &printBM("#########################################################\n");
         &printBM("#> Copyright 2019+, Xavier-Studio, All Rights Reserve. <#\n");
         &printBM("#########################################################\n");
+}
+
+sub x_module {
+        my $module = shift;
+        no strict 'refs';
+        return grep {defined & {"$module\::$_"}} keys %{"$module\::"}
+}
+
+sub x_kill_A {
+        $pstemp = `pstree -p $$ | sed -e 's+*+\\n+g' -e 's+\(\\\|\)+\\n+g'`;
+        @pstemp = split(/s+/,$pstemp);
+        $SIG{INT} = sub {
+                #@pstemp = split(/s+/,$pstemp);
+                foreach $pstmp(@pstemp) {push @pstree,$pstmp if ($pstmp =~ /\d+/);};
+                &printBR("\n### You has enter the Ctrl+C keys, now exit @pstree");
+                kill(9,@pstree);exit;
+        };
+}
+sub x_kill_B {
+        $pstemp = `pstree -p \$\$ | sed -e 's+*+\\n+g' -e 's+\(\\\|\)+\\n+g'`;
+        @pstemp = split(/s+/,$pstemp);
+        $SIG{INT} = sub {
+                #@pstemp = split(/s+/,$pstemp);
+                foreach $pstmp(@pstemp) {        
+                        push @pstree,$pstmp if ($pstmp =~ /\d+/);
+                        &printBR("\n### You has enter the Ctrl+C keys, now exit @pstree");
+                }
+                kill(9,@pstree);exit;
+        };
 }
 
 #&splitline(100,"#");
@@ -68,6 +98,15 @@ sub get_log {
         foreach $XXXXXXXTMP(@XXXXXXXLOG) {print LOG "$XXXXXXXTMP ";}
         print LOG "# Values : @_ \n";
         close(LOG);
+}
+
+sub kill_x11_all {
+        &xavierstudio;
+        chomp(@x11list=`grep -ri "WINDOW" /home/$XUSER/.dbus/session-bus/|sed "s+.*=++g"`);
+        @x11list = sort(&uniq(@x11list));
+        &printBR("Killing all X11 ID now\t\!\!\!\n");
+        foreach $x11id(@x11list) {&printBR("Killing : $x11id\t\!\!\!\n");&cmd("xkill -id $x11id");}
+        &printBR("Please logout and login again \!\!\!\n");
 }
 
 1;
