@@ -109,4 +109,41 @@ sub kill_x11_all {
         &printBR("Please logout and login again \!\!\!\n");
 }
 
+sub print_multi_cols {
+        chomp(my $maxcols=`tput cols`);my @arr;my $color;
+        if ((@_[1] !~ /cmd/i) && @_[1] !~ /list/i)) {&printBR("### ERROR : print_multi_cols only support types 'list' or 'cmd'\!\!\!\n");exit;}
+        chomp(@arr=`@_[0]`)             if (@_[1] =~ /cmd/i);
+        chomp(@arr=split(" ",@_[0]))    if (@_[1] =~ /list/i);
+        $color=@_[2]    if (@_[2] !~ /^\s*$/);
+        $color="blue"   if (@_[2] !~ /^\s*$/);
+        my $c=0;my $i=1;my $TTT;
+        foreach my $ttt(@arr) {@ttt=split("",$ttt);my $ttt=@ttt;$TTT=$ttt if ($TTT < $ttt);undef(@ttt);};
+        $TTT=int($TTT/10);my $limit; if ($TTT < 5) {$limit=3+$TTT*10;} else {$limit=43;};
+        foreach my $tmp(@arr) {
+                my @tmp=split("",$tmp);my $A=@tmp;undef(@tmp);$A=$A+7;
+                if ($c > $maxcols) {print "\n";$c=0};
+                if ($A <= ($limit+7)) {
+                        if (($c+$limit+7) >$maxcols) {print "\n";$c=0}
+                        $c=$c+$limit+7;my $p=$limit;
+                        print color($color);
+                        printf "%-6s%-${p}s ","[$i]",$tmp;
+                        print color('reset');
+                } else {
+                        if ($A <= (($limit+7)*2)) {
+                                if (($c+($limit+7)*2) >$maxcols) {print "\n";$c=0}
+                                $c=$c+($limit+7)*2;my $p=$limit+($limit+7);
+                                print color($color);
+                                printf "%-6s%-${p}s ","[$i]",$tmp;
+                                print color('reset');
+                        } else {
+                                if (($c+($limit+7)*3) >$maxcols) {print "\n";$c=0}
+                                $c=$c+($limit+7)*3;my $p=$limit+($limit+7)*2;
+                                print color($color);
+                                printf "%-6s%-${p}s ","[$i]",$tmp;
+                                print color('reset');
+                        }
+                }
+        }
+}
+
 1;
