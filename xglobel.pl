@@ -115,7 +115,7 @@ sub print_multi_cols {
         chomp(@arr=`@_[0]`)             if (@_[1] =~ /cmd/i);
         chomp(@arr=split(" ",@_[0]))    if (@_[1] =~ /list/i);
         $color=@_[2]    if (@_[2] !~ /^\s*$/);
-        $color="blue"   if (@_[2] !~ /^\s*$/);
+        $color="blue"   if (@_[2] =~ /^\s*$/);
         my $c=0;my $i=1;my $TTT;
         foreach my $ttt(@arr) {@ttt=split("",$ttt);my $ttt=@ttt;$TTT=$ttt if ($TTT < $ttt);undef(@ttt);};
         $TTT=int($TTT/10);my $limit; if ($TTT < 5) {$TTT=1 if ($TTT<1);$limit=3+$TTT*10;} else {$limit=43;};
@@ -147,5 +147,20 @@ sub print_multi_cols {
         }
         print "\n";
 }
+
+####################################### note for Chinese coding
+#use utf8;
+#binmode(STDOUT,":encoding(gbk)");
+#binmode(STDIN,":encoding(gbk)");
+#binmode(STDERR,":encoding(gbk)");
+#use open ":encoding(gbk)",":std";
+#use Encode;
+#$enco="big5";
+#$enco="cp936";
+#$enco="gb2312";
+#$enco="gbk";
+#@buff=split(/ |\t/,decode($enco,$_));
+#encode($enco,@buff[1]);
+####################################### note end
 
 1;
