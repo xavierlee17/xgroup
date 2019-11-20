@@ -118,7 +118,7 @@ sub print_multi_cols {
         $color="blue"   if (@_[2] !~ /^\s*$/);
         my $c=0;my $i=1;my $TTT;
         foreach my $ttt(@arr) {@ttt=split("",$ttt);my $ttt=@ttt;$TTT=$ttt if ($TTT < $ttt);undef(@ttt);};
-        $TTT=int($TTT/10);my $limit; if ($TTT < 5) {$limit=3+$TTT*10;} else {$limit=43;};
+        $TTT=int($TTT/10);my $limit; if ($TTT < 5) {$TTT=1 if ($TTT<1);$limit=3+$TTT*10;} else {$limit=43;};
         foreach my $tmp(@arr) {
                 my @tmp=split("",$tmp);my $A=@tmp;undef(@tmp);$A=$A+7;
                 if ($c > $maxcols) {print "\n";$c=0};
