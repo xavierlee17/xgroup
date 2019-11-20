@@ -143,7 +143,9 @@ sub print_multi_cols {
                                 print color('reset');
                         }
                 }
+                $i++;
         }
+        print "\n";
 }
 
 1;
