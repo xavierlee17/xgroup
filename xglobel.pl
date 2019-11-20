@@ -18,20 +18,20 @@ chomp($XSYS     = `cat /etc/centos-release`);
 chomp($XGRP     = `id -g -n`);
 chomp($XIPD     = `hostname -I`);
 
-$Xengine="$XHOME/X_engine"
+$Xengine="$XHOME/X_engine";
 
-sub printB      {print color('blue');           print "@_";print color('reset');}
-sub printR      {print color('red');            print "@_";print color('reset');}
-sub printG      {print color('green');          print "@_";print color('reset');}
-sub printY      {print color('yellow');         print "@_";print color('reset');}
-sub printM      {print color('magenta');        print "@_";print color('reset');}
-sub printC      {print color('cyan');           print "@_";print color('reset');}
-sub printBB     {print color('bold blue');      print "@_";print color('reset');}
-sub printBR     {print color('bold red');       print "@_";print color('reset');}
-sub printBG     {print color('bold green');     print "@_";print color('reset');}
-sub printBY     {print color('bold yellow');    print "@_";print color('reset');}
-sub printBM     {print color('bold magenta');   print "@_";print color('reset');}
-sub printBC     {print color('bold cyan');      print "@_";print color('reset');}
+sub printB      {print color('blue');           print "@_";print color('reset');};
+sub printR      {print color('red');            print "@_";print color('reset');};
+sub printG      {print color('green');          print "@_";print color('reset');};
+sub printY      {print color('yellow');         print "@_";print color('reset');};
+sub printM      {print color('magenta');        print "@_";print color('reset');};
+sub printC      {print color('cyan');           print "@_";print color('reset');};
+sub printBB     {print color('bold blue');      print "@_";print color('reset');};
+sub printBR     {print color('bold red');       print "@_";print color('reset');};
+sub printBG     {print color('bold green');     print "@_";print color('reset');};
+sub printBY     {print color('bold yellow');    print "@_";print color('reset');};
+sub printBM     {print color('bold magenta');   print "@_";print color('reset');};
+sub printBC     {print color('bold cyan');      print "@_";print color('reset');};
 
 sub xengine     {system "$Xengine @_[0] @_[1]";}
 sub uniq        {my %seen;return grep {!$seen{$_}++} @_;}
@@ -111,7 +111,7 @@ sub kill_x11_all {
 
 sub print_multi_cols {
         chomp(my $maxcols=`tput cols`);my @arr;my $color;
-        if ((@_[1] !~ /cmd/i) && @_[1] !~ /list/i)) {&printBR("### ERROR : print_multi_cols only support types 'list' or 'cmd'\!\!\!\n");exit;}
+        if ((@_[1] !~ /cmd/i) && (@_[1] !~ /list/i)) {&printBR("### ERROR : print_multi_cols only support types 'list' or 'cmd'\!\!\!\n");exit;};
         chomp(@arr=`@_[0]`)             if (@_[1] =~ /cmd/i);
         chomp(@arr=split(" ",@_[0]))    if (@_[1] =~ /list/i);
         $color=@_[2]    if (@_[2] !~ /^\s*$/);
