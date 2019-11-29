@@ -36,6 +36,12 @@ sub printBC     {print color('bold cyan');      print "@_";print color('reset');
 sub xengine     {system "$Xengine @_[0] @_[1]";}
 sub uniq        {my %seen;return grep {!$seen{$_}++} @_;}
 sub mktmpdir    {$xtmp=@_[0];$tmpdir = "/tmp/$XUSER/.$xtmp";if (! -e $tmpdir ) {system "mkdir -p $tmpdir";};}
+sub xcmd        {$cmd =@_[0];if ($xdebug) {print "$cmd\n";}else {system "$cmd";};}
+sub xerrexist   {$file=@_[0];$if (! -e "$file") {&printBR("### ERROR :$file is not exist\!\!\!\nExit\n");exit;};}
+sub cmd_err_die {if ($? != 0) {&printBR("### ERROR :Last command status is $?\nExit...\n");exit;}}
+sub wfile       {my($content,$f)=@_;open(F,">$f";my(@lines)=<F>;close(F);}
+sub rfile       {my($f)=@_;open(F,"$f");my @lines=<F>;close(F);return @lines;}
+sub rfile_str   {my($f)=@_;@lines=&readfile($f);my $str = join '',@lines;return $str;}
 
 sub xavierstudio {
         &printBM("#########################################################\n");
@@ -146,6 +152,23 @@ sub print_multi_cols {
                 $i++;
         }
         print "\n";
+}
+
+sub find_include_file {
+        my $file = @_[0];chomp(my $filetmp = `readlink -e $file`);&cmd_err_die;push @include_file,$filetmp;
+        open(FILE,$file);
+        while (<FILE>) {chomp($_)};$_ =~ s/\"//g;@buff = split(/ |\t/,$_);
+        if (@buff[0] =~ /^include$/i) {chomp (my $filetmp = `readlink -e @buff[1]`);&cmd_err_die;push @include_file,$filetmp;};}
+        close(FILE);
+        @include_file=&uniq(sort(@include_file));
+}
+
+sub find_include_file_deep {
+        my @include_file;my $file = @_[];my $deep = @_[1];
+        if ($deep !~ /\d+/) {&printBR ("### ERROR : usage:fine_include_file_deep target_file deep\nExit...\n");exit;}
+        $deep = 1 if ($deep < 1); &find_include_file($file);
+        if ($deep >=2) {$deep = $deep -1;for (my $i=0;$i<$deep;$i++) {if (@include_file) {foreach my $tmp(@include_file) {&find_include_file($tmp);};};};}
+        return @include_file;
 }
 
 ####################################### note for Chinese coding
