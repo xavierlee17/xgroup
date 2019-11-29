@@ -14,7 +14,7 @@ chomp($XUSER    = `whoami`);
 chomp($XHOST    = `hostname -A`);
 chomp($XDATE    = `date +%Y_%m_%d_%H_%M-%a`);
 chomp($XPWD     = `pwd`);
-chomp($XSYS     = `cat /etc/centos-release`);
+chomp($XSYS     = `cat uname -r`);
 chomp($XGRP     = `id -g -n`);
 chomp($XIPD     = `hostname -I`);
 
